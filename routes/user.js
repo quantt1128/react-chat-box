@@ -72,23 +72,26 @@ app.post('/detail', (req, res) => {
 });
 
 
-app.post('/send-message', (req, res) => {
+app.post('/send-message', (req, response) => {
+    const {userId, roomId, text} = req.body;
     chatkit.sendSimpleMessage({
-        userId: 'novitase',
-        roomId: 'mon-hoc-1',
-        text: 'hello!',
+        userId: userId,
+        roomId: roomId,
+        text: text,
     })
         .then(res => {
-            res.status(res.status).json({
-                status: res.status,
+            console.log(res);
+            response.status(200).json({
+                status: 200,
                 message: 'success',
-                messageId: res.messageId
-            })
+                messageId: res.message_id
+            });
         })
         .catch(err => {
-            res.status(err.status).json({
+            console.log(err);
+            response.status(err.status).json({
                 status: err.status,
-                message: err.message
+                message: err.error_description
             })
         })
 });
